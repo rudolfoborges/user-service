@@ -9,5 +9,6 @@ var serviceModule = fx.Module(
 	"service",
 	fx.Provide(
 		service.NewUserService,
+		service.NewSessionService,
 	),
 )

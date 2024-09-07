@@ -9,5 +9,6 @@ var repositoryModule = fx.Module(
 	"repository",
 	fx.Provide(
 		repository.NewUserRepository,
+		repository.NewSessionRepository,
 	),
 )

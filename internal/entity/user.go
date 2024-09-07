@@ -32,3 +32,7 @@ func NewUser(name, email, password string) *User {
 		UpdatedAt: time.Now(),
 	}
 }
+
+func (e *User) ComparePassword(password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(e.Password), []byte(password))
+}

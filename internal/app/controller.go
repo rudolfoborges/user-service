@@ -9,5 +9,6 @@ var controllerModule = fx.Module(
 	"controller",
 	fx.Provide(
 		controller.NewUserController,
+		controller.NewSessionController,
 	),
 )
