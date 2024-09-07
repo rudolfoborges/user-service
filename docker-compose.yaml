@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        ports:
+            - 8000:8000
+        env_file:
+            - .env
+        volumes:
+            - ./:/app
+        depends_on:
+            - postgres
+            - migration
+        networks:
+            - user-service
+
+    postgres:
+        image: postgres:16
+        container_name: user-service-postgres
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: app
+            POSTGRES_DB: users
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./.data/database:/var/lib/postgresql/data
+        networks:
+            - user-service
+
+    migration:
+        image: flyway/flyway:9.0
+        command: -community -url=jdbc:postgresql://postgres:5432/users -schemas=public -user=app -password=app -connectRetries=60 migrate
+        volumes:
+            - ./db/migrations:/flyway/sql
+        depends_on:
+            - postgres
+        networks:
+            - user-service
+
+networks:
+    user-service:
+        name: user-service
